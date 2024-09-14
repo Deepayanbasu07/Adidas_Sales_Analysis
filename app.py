@@ -203,10 +203,10 @@ st.markdown("### Powered by Adidas Sales Data Analysis")
 col1, col2, col3, col4 = st.columns(4)
 
 # Load the footer images (replace with your actual image paths)
-footer_image1 = Image.open('D:/Py/Adidas Sales Dashboard/f1.jpg').resize((300, 200))
-footer_image2 = Image.open('D:/Py/Adidas Sales Dashboard/f2.jpg').resize((300, 200))
-footer_image3 = Image.open('D:/Py/Adidas Sales Dashboard/f3.jpg').resize((300, 200))
-footer_image4 = Image.open('D:/Py/Adidas Sales Dashboard/adidas-brand-campaigns-1.jpg').resize((300, 200))
+footer_image1 = Image.open('images/f1.jpg').resize((300, 200))
+footer_image2 = Image.open('images/f2.jpg').resize((300, 200))
+footer_image3 = Image.open('images/f3.jpg').resize((300, 200))
+footer_image4 = Image.open('images/adidas-brand-campaigns-1.jpg').resize((300, 200))
 
 # Display the images in the respective columns
 with col1:
