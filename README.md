@@ -40,7 +40,7 @@ The data used in this project includes over **100,000 rows** of Adidas sales dat
 - Improved performance in **underperforming regions by 5%** through data-driven insights.
 
 ## **Deployment**
-The app is deployed on **Streamlit Cloud** and can be accessed live [here](link_to_your_deployed_app).
+The app is deployed on **Streamlit Cloud** and can be accessed live [here](https://adidassalesanalysis-oqhrrf7envobuxhhfug854.streamlit.app/).
 
 ## **Contact**
 For questions or feedback, please feel free to contact me at:
