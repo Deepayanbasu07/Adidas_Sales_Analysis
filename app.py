@@ -195,6 +195,117 @@ product_profit_fig = px.scatter(product_profit, x='TotalSales', y='OperatingProf
                                 labels={'TotalSales': 'Total Sales ($)', 'OperatingProfit': 'Operating Profit ($)'})
 st.plotly_chart(product_profit_fig, use_container_width=True)
 
+# Additional KPIs Section
+st.markdown("### Key Performance Indicators")
+
+# Total Units Sold
+total_units_sold = df['UnitsSold'].sum()
+
+# Average Price per Unit
+avg_price_per_unit = df['PriceperUnit'].mean()
+
+# Gross Profit (Assuming CostPerUnit is estimated at 70% of PriceperUnit)
+df['CostPerUnit'] = df['PriceperUnit'] * 0.7
+df['GrossProfit'] = df['TotalSales'] - (df['UnitsSold'] * df['CostPerUnit'])
+total_gross_profit = df['GrossProfit'].sum()
+
+# Profit Margin (Operating Profit / Total Sales)
+df['ProfitMargin'] = (df['OperatingProfit'] / df['TotalSales']) * 100
+avg_profit_margin = df['ProfitMargin'].mean()
+
+# Display these KPIs in columns
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.metric(label="Total Units Sold", value=f"{total_units_sold:,}")
+with col2:
+    st.metric(label="Average Price per Unit", value=f"${avg_price_per_unit:,.2f}")
+with col3:
+    st.metric(label="Total Gross Profit", value=f"${total_gross_profit:,.2f}")
+with col4:
+    st.metric(label="Average Profit Margin", value=f"{avg_profit_margin:.2f}%")
+    
+st.markdown("### Cumulative Sales Over Time")
+# Cumulative Sales Over Time
+df['CumulativeSales'] = df['TotalSales'].cumsum()
+
+# Plot Cumulative Sales
+cumulative_sales_fig = px.line(df, x='InvoiceDate', y='CumulativeSales', title='Cumulative Sales Over Time',
+                               labels={'CumulativeSales': 'Cumulative Sales ($)'}, template="seaborn")
+st.plotly_chart(cumulative_sales_fig, use_container_width=True)
+
+
+st.markdown("### Product-wise Sales Trend")
+# Product-wise Sales Trend Over Time
+product_sales_trend = df.groupby(['Product', 'InvoiceDate'])['TotalSales'].sum().reset_index()
+
+# Plot Product-wise Sales Trend
+product_sales_fig = px.line(product_sales_trend, x='InvoiceDate', y='TotalSales', color='Product',
+                            title='Product-wise Sales Trend Over Time',
+                            labels={'TotalSales': 'Total Sales ($)'}, template="seaborn")
+st.plotly_chart(product_sales_fig, use_container_width=True)
+
+
+
+# st.markdown("### Customer Segmentation by Retailer")
+# # Sales per Retailer ID
+# retailer_sales = df.groupby('RetailerID')['TotalSales'].sum().reset_index()
+
+# # Plot Retailer Sales Distribution
+# retailer_sales_fig = px.bar(retailer_sales, x='RetailerID', y='TotalSales', title='Sales by Retailer ID',
+#                             labels={'TotalSales': 'Total Sales ($)'}, template="seaborn")
+# st.plotly_chart(retailer_sales_fig, use_container_width=True)
+
+
+
+st.markdown("### Correlation Heatmap")
+# Correlation Heatmap
+correlation_matrix = df[['TotalSales', 'OperatingProfit', 'PriceperUnit', 'UnitsSold', 'ProfitMargin']].corr()
+
+# Plot Correlation Heatmap
+heatmap_fig = px.imshow(correlation_matrix, text_auto=True, title='Correlation Heatmap',
+                        labels={'color': 'Correlation Coefficient'})
+heatmap_fig.update_layout(
+    height=900,  # Adjust height as needed
+    width=1400    # Adjust width as needed
+)
+st.plotly_chart(heatmap_fig, use_container_width=True)
+
+
+st.markdown("### Box Plot for Operating Margin")
+# Box Plot for Operating Margin
+margin_boxplot_fig = px.box(df, x='Region', y='ProfitMargin', title='Operating Margin by Region',
+                            labels={'ProfitMargin': 'Operating Margin (%)'}, template="seaborn")
+st.plotly_chart(margin_boxplot_fig, use_container_width=True)
+
+
+
+st.markdown("### Feature Engineering - Seasonality Features")
+# Extracting Month, Quarter, and Day of the Week
+df['Month'] = df['InvoiceDate'].dt.month
+df['Quarter'] = df['InvoiceDate'].dt.quarter
+df['DayOfWeek'] = df['InvoiceDate'].dt.dayofweek
+
+# Visualization: Sales by Month
+month_sales = df.groupby('Month')['TotalSales'].sum().reset_index()
+
+month_sales_fig = px.bar(month_sales, x='Month', y='TotalSales', title='Total Sales by Month',
+                         labels={'TotalSales': 'Total Sales ($)'}, template="seaborn")
+st.plotly_chart(month_sales_fig, use_container_width=True)
+
+
+st.markdown("### Profitability by Product (with Scatter Plot)")
+# Profitability by Product (Scatter Plot)
+product_profit = df.groupby('Product').agg({'TotalSales': 'sum', 'OperatingProfit': 'sum'}).reset_index()
+
+product_profit_fig = px.scatter(product_profit, x='TotalSales', y='OperatingProfit', size='OperatingProfit',
+                                color='Product', hover_name='Product',
+                                labels={'TotalSales': 'Total Sales ($)', 'OperatingProfit': 'Operating Profit ($)'},
+                                title='Profitability by Product')
+st.plotly_chart(product_profit_fig, use_container_width=True)
+
+
+
+
 # --- Footer Branding ---
 # Footer logo and tagline
 st.markdown("### Powered by Adidas Sales Data Analysis")
