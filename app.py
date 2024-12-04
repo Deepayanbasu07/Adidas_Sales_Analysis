@@ -293,15 +293,7 @@ month_sales_fig = px.bar(month_sales, x='Month', y='TotalSales', title='Total Sa
 st.plotly_chart(month_sales_fig, use_container_width=True)
 
 
-st.markdown("### Profitability by Product (with Scatter Plot)")
-# Profitability by Product (Scatter Plot)
-product_profit = df.groupby('Product').agg({'TotalSales': 'sum', 'OperatingProfit': 'sum'}).reset_index()
 
-product_profit_fig = px.scatter(product_profit, x='TotalSales', y='OperatingProfit', size='OperatingProfit',
-                                color='Product', hover_name='Product',
-                                labels={'TotalSales': 'Total Sales ($)', 'OperatingProfit': 'Operating Profit ($)'},
-                                title='Profitability by Product')
-st.plotly_chart(product_profit_fig, use_container_width=True)
 
 
 
